@@ -12,6 +12,7 @@
 import Uploader from '../../Uploader'
 import File from '../../File'
 import clone from 'lodash.clone'
+import SymbolFallback from 'babel-runtime/core-js/symbol'
 
 const component = {}
 
@@ -219,7 +220,13 @@ component.methods.bindEvents = function () {
  * @return {Object}
  */
 component.methods.getFile = function (blobId) {
-  return this.files.find((file) => file._file.blobId === blobId) || {}
+  let matchedFile = {}
+  this.files.forEach((file) => {
+    if (file._file.blobId === blobId) {
+      matchedFile = file
+    }
+  })
+  return matchedFile
 }
 
 /**
@@ -233,7 +240,7 @@ component.methods.getFile = function (blobId) {
  * @param  {Object} file
  */
 component.methods.addedFile = function (file) {
-  const fileId = Symbol()
+  const fileId = SymbolFallback()
   file.blobId = fileId
   this.files.push(new File(file))
   this.onAddedFile(this.getFile(fileId))
