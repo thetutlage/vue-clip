@@ -3,9 +3,12 @@
 const webpackConfig = require('./webpack.config.js')
 delete webpackConfig.entry
 
+const testType = process.argv.indexOf('--local') > -1 ? 'local' : 'remote'
+const browsers = testType === 'local' ? ['Chrome'] : ['PhantomJS']
+
 module.exports = function (config) {
   config.set({
-    browsers: ['Chrome'],
+    browsers: browsers,
     frameworks: ['mocha'],
     files: ['test/index.js'],
     preprocessors: {
@@ -15,6 +18,6 @@ module.exports = function (config) {
     webpackMiddleware: {
       noInfo: true
     },
-    singleRun: false
+    singleRun: true
   })
 }
