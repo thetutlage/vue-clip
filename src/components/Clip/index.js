@@ -16,17 +16,9 @@ import SymbolFallback from 'babel-runtime/core-js/symbol'
 
 const component = {}
 
-component.template = `<div class="clip-uploder">
-  <div ref="clip-uploader-action" class="clip-uploader-action" v-bind:class="actionClass" style="display: inline-block;">
-    <div class="dz-message">
-      <slot name="clip-uploader-action" :dragging="dragCounter > 0"></slot>
-    </div>
-  </div>
-
-  <div class="clip-uploader-body">
-    <slot name="clip-uploader-body" :files="files"></slot>
-  </div>
-
+component.template = `<div v-bind:class="uploaderClass">
+  <slot name="clip-uploader-action" :dragging="dragCounter > 0"></slot>
+  <slot name="clip-uploader-body" :files="files"></slot>
   <div ref="clip-preview-template" class="clip-preview-template" style="display: none;"><div></div></div>
 </div>`
 
@@ -41,7 +33,7 @@ component.props = {}
  *
  * @type {Object}
  */
-component.props.actionClass = {
+component.props.uploaderClass = {
   type: String
 }
 
@@ -183,7 +175,7 @@ component.mounted = function () {
    */
   this.uploader = new Uploader(options)
   this.bindEvents()
-  this.uploader.mount(this.$refs['clip-uploader-action'])
+  this.uploader.mount(this.$el.firstElementChild)
   this.onInit(this)
 }
 
