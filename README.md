@@ -1,19 +1,18 @@
-<p align="center">
-  <img src="http://res.cloudinary.com/adonisjs/image/upload/v1483252340/vue-clip_o46c8r.png" alt="" style="width: 200px;">
-</p>
+## Introduction
 
-<hr>
+Vue clip is a minimalistic and hackable file uploader for VueJs. I wrote this plugin due to the absence of well written file uploaders with fine-grained controls.
 
-<p align="center">
+<p>
   <a href="https://www.npmjs.com/package/vue-clip"><img src="https://img.shields.io/npm/v/vue-clip.svg?style=flat-square" alt="Version"></a>
   <a href="https://travis-ci.org/thetutlage/vue-clip"><img src="https://img.shields.io/travis/thetutlage/vue-clip/master.svg?style=flat-square" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/vue-clip"><img src="https://img.shields.io/npm/dt/vue-clip.svg?style=flat-square" alt="Downloads"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/vue-clip.svg?style=flat-square" alt="License"></a>
 </p>
 
-## Introduction
-
-Vue clip is a minimalistic and hackable file uploader for VueJs. I wrote this plugin due to the absence of quality file uploaders with fine-grained controls.
+#### Features
+1. Written in vanilla Javascript.
+2. Weighs **17.9KB ( Minified and Gzip )**, **57KB ( Minified )**.
+3. Hackable to the core with custom events.
 
 ## Setup
 You can make use of module by installing it from `npm` or directly using it from CDN.
@@ -22,7 +21,7 @@ You can make use of module by installing it from `npm` or directly using it from
 
 ```bash
 npm i --save vue-clip
-``` 
+```
 
 ```javascript
 import Vue from 'vue'
@@ -40,9 +39,10 @@ Also, you can reference the script file via [CDN]() which will add a global comp
 ```html
 <template>
   <vue-clip :options="options">
-
     <template slot="clip-uploader-action">
-      <h2> Click or Drag and Drop files here upload </h2>
+      <div>
+        <div class="dz-message"><h2> Click or Drag and Drop files here upload </h2></div>
+      </div>
     </template>
 
     <template slot="clip-uploader-body" scope="props">
@@ -57,7 +57,7 @@ Also, you can reference the script file via [CDN]() which will add a global comp
 
 <script>
   export default {
-    
+
     data () {
       return {
         options: {
@@ -71,7 +71,7 @@ Also, you can reference the script file via [CDN]() which will add a global comp
 </script>
 ```
 
-#### Configuration Options
+## Configuration Options
 
 | Option | Possible Values | Description |
 |--------|-----------------|-------------|
@@ -87,7 +87,7 @@ Also, you can reference the script file via [CDN]() which will add a global comp
 | accept | Function | A custom function to be used for validating each file upload. This method receives a `done` callback. In the case of any errors, you must call done with a single error argument.
 
 #### maxFilesize
-The `maxFilesize` option defines the size of the file to be checked for when uploading files. 
+The `maxFilesize` option defines the size of the file to be checked for when uploading files.
 
 ```js
 {
@@ -137,7 +137,7 @@ The mime types of files to be accepted.
 {
   acceptedFiles: {
     extensions: ['image/*'],
-    message: 'You are uploading a invalid file'
+    message: 'You are uploading an invalid file'
   }
 }
 ```
@@ -161,7 +161,7 @@ The `accept` is a low-level method to run manual validations and return a format
 
 ## Dragging
 
-The most common requirement is to know when a user `starts` and `stops` dragging a file so that you can add some visual feedback to the UI. The easiest way is to make use of [Scoped slots](https://vuejs.org/v2/guide/components.html#Scoped-Slots). 
+The most common requirement is to know when a user `starts` and `stops` dragging a file so that you can add some visual feedback to the UI. The easiest way is to make use of [Scoped slots](https://vuejs.org/v2/guide/components.html#Scoped-Slots).
 
 ```html
 <template>
@@ -445,48 +445,54 @@ The event is called when maxFiles upload limit has been reached. This event will
 ## File Attributes
 The file instance sent along events has following attributes.
 
-#### name: String
-The client name of the file.
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| name | String | The client name of the file |
+| status String | String | The file status, which can be `success`, `error`, `queued`, `added`. |
+| width | Number | The file width. Only for images. |
+| height | Number | The file height. Only for images. |
+| bytesSent | Number | The total bytes sent to the server so far. |
+| progress | Number | Total upload progress. |
+| total | Number | The total number of bytes to be sent to the server. |
+| type | String | The file mime-type. |
+| size | Number | The file size on user disk. |
+| dataUrl | String | File base64 data URL to be used for displaying images preview. |
+| xhrResponse | Object | Server xhrResponse. Only contains `response`, `responseText` and `statusCode` |
+| errorMessage | String | Error message when processing a file. If the error is returned from the server, it will be the value of XHR error. Also can be client errors for `maxSize` etc.|
+| customAttributes | Object | Each file needs some custom attributes, for example `server id` to  be used for deleting the files.|
 
-#### status: String
-The file status, which can be `success`, `error`, `queued`, `added`.
-
-#### width
-The file width. Only for images.
-
-#### height
-The file height. Only for images.
-
-#### bytesSent
-The total bytes sent to the server so far.
-
-#### progress
-Total upload progress.
-
-#### total
-The total number of bytes to be sent to the server.
-
-#### type
-The file mime-type.
-
-#### size
-The file size on user disk.
-
-#### dataUrl
-File base64 data URL to be used for displaying images preview.
-
-#### xhrResponse
-Server xhrResponse. Only contains `response`, `responseText` and `statusCode`
-
-#### errorMessage
-Error message when processing a file. If the error is returned from the server, it will be the value of XHR error. Also can be client errors for `maxSize` etc.
-
-#### customAttributes
-Each file needs some custom attributes, for example `server id` to be used for deleting the files.
-
+#### Adding/Accessing Custom Attributes
 ```javascript
 file.addAttribute('id', xhr.response.id)
 
 // access id
 file.customAttributes.id
 ```
+
+## Browser Support
+
+- Chrome 7+
+- Firefox 4+
+- IE 10+
+- Opera 12+
+- Safari 6+
+
+
+#### Things to consider
+Make sure you add class `dz-message` to the uploader action wrapped inside `clip-uploader-action` slot. This makes your entire action body clickable. There are ways to get around it, but I wanted to keep the API transparent, instead of adding a bunch of DOM elements behind the scenes.
+
+```html
+<template slot="clip-uploader-action">
+  <div>
+    <div class="dz-message"><h2> Click or Drag and Drop files here upload </h2></div>
+  </div>
+</template>
+```
+
+## Recipes
+
+#### Tutorial
+
+#### Displaying Files Out Of Vue Clip Area
+
+#### Uploading Files Using A Custom File Input
