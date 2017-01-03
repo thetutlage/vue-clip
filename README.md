@@ -13,6 +13,11 @@ Vue clip is a minimalistic and hackable file uploader for VueJs. I wrote this pl
 1. Written in vanilla Javascript.
 2. Weighs **17.9KB ( Minified and Gzip )**, **57KB ( Minified )**.
 3. Hackable to the core with custom events.
+4. Does not pollute DOM by adding unnecessary markup. Infact the component will create a single div element.
+
+## Quick Intro
+
+<iframe src="https://www.youtube.com/embed/84_SwbPWjKo" type="text/html" width="640" height="360" frameborder="0"></iframe>
 
 ## Setup
 You can make use of module by installing it from `npm` or directly using it from CDN.
@@ -478,7 +483,7 @@ file.customAttributes.id
 - Safari 6+
 
 
-#### Things to consider
+## Things to consider
 Make sure you add class `dz-message` to the uploader action wrapped inside `clip-uploader-action` slot. This makes your entire action body clickable. There are ways to get around it, but I wanted to keep the API transparent, instead of adding a bunch of DOM elements behind the scenes.
 
 ```html
@@ -489,10 +494,3 @@ Make sure you add class `dz-message` to the uploader action wrapped inside `clip
 </template>
 ```
 
-## Recipes
-
-#### Tutorial
-
-#### Displaying Files Out Of Vue Clip Area
-
-#### Uploading Files Using A Custom File Input
