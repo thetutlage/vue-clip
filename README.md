@@ -51,7 +51,7 @@ Also, you can reference the script file via [CDN]() which will add a global comp
     </template>
 
     <template slot="clip-uploader-body" scope="props">
-      <div v-for="file in file.props">
+      <div v-for="file in props.files">
         <img v-bind:src="file.dataUrl" />
         {{ file.name }} {{ file.status }}
       </div>
