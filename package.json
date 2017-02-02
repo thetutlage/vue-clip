@@ -44,5 +44,16 @@
   "dependencies": {
     "dropzone": "^4.3.0",
     "lodash.clone": "^4.5.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thetutlage/vue-clip.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thetutlage/vue-clip/issues"
+  },
+  "homepage": "https://github.com/thetutlage/vue-clip#readme"
 }
