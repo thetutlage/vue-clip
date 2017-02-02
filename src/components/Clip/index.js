@@ -153,13 +153,13 @@ component.mounted = function () {
   if (typeof (options.maxFiles) !== 'undefined' && options.maxFiles instanceof Object === true) {
     const {limit, message} = options.maxFiles
     options.maxFiles = limit
-    options.dictMaxFilesExceeded = message
+    options.dictMaxFilesExceeded = this.cleanupMessage(message)
   }
 
   if (typeof (options.maxFilesize) !== 'undefined' && options.maxFilesize instanceof Object === true) {
     const {limit, message} = options.maxFilesize
     options.maxFilesize = limit
-    options.dictFileTooBig = message
+    options.dictFileTooBig = this.cleanupMessage(message)
   }
 
   if (typeof (options.acceptedFiles) !== 'undefined' &&
@@ -167,7 +167,7 @@ component.mounted = function () {
     options.acceptedFiles instanceof Array === false) {
     const {extensions, message} = options.acceptedFiles
     options.acceptedFiles = extensions.join(',')
-    options.dictInvalidFileType = message
+    options.dictInvalidFileType = this.cleanupMessage(message)
   }
 
   /**
@@ -410,6 +410,16 @@ component.methods.addFile = function (file) {
  */
 component.methods.removeAllFiles = function (cancelQueued) {
   this.uploader.removeAllFiles(cancelQueued)
+}
+
+/**
+ * Cleans up message by removing spaces within the curly braces
+ *
+ * @param  {String}       message
+ * @return {String}
+ */
+component.methods.cleanupMessage = function (message) {
+  return message.replace(/{{\s*?(\w+)\s*?}}/g, (match, group) => `{{${group}}}`)
 }
 
 export default component

@@ -100,14 +100,14 @@ describe('Clip', function () {
           url: '/upload',
           maxFilesize: {
             limit: 4,
-            message: 'File is too big'
+            message: '{{filesize}} is greater than {{ maxFilesize }}'
           }
         }
       }
     })
     component.$mount()
     assert.equal(component.uploader._options.maxFilesize, 4)
-    assert.equal(component.uploader._options.dictFileTooBig, 'File is too big')
+    assert.equal(component.uploader._options.dictFileTooBig, '{{filesize}} is greater than {{maxFilesize}}')
   })
 
   it('should set acceptedFiles property on options object when defined', function () {
@@ -232,5 +232,27 @@ describe('Clip', function () {
     component.error({blobId: file.blobId, status: 'error'}, 'Something bad happened')
     assert.equal(component.files[0].status, 'error')
     assert.equal(component.files[0].errorMessage, 'Something bad happened')
+  })
+
+  it('should cleanup the message by removing spaces within the double curly braces', function () {
+    const component = new this.Component({
+      propsData: {
+        options: {
+          url: '/upload'
+        }
+      }
+    })
+    assert.equal(component.cleanupMessage('The {{ filesize }} is too big'), 'The {{filesize}} is too big')
+  })
+
+  it('should cleanup the message by removing spaces within the double curly braces for multiple instances', function () {
+    const component = new this.Component({
+      propsData: {
+        options: {
+          url: '/upload'
+        }
+      }
+    })
+    assert.equal(component.cleanupMessage('The {{ filesize }} is greater than {{ maxFilesize }}'), 'The {{filesize}} is greater than {{maxFilesize}}')
   })
 })
