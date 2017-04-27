@@ -162,12 +162,24 @@ component.mounted = function () {
     options.dictFileTooBig = this.cleanupMessage(message)
   }
 
-  if (typeof (options.acceptedFiles) !== 'undefined' &&
-    options.acceptedFiles instanceof Object === true &&
-    options.acceptedFiles instanceof Array === false) {
-    const {extensions, message} = options.acceptedFiles
-    options.acceptedFiles = extensions.join(',')
-    options.dictInvalidFileType = this.cleanupMessage(message)
+  if (typeof options.acceptedFiles !== 'undefined' &&
+  options.acceptedFiles !== null) {
+    switch (Object.prototype.toString.call(options.acceptedFiles)) {
+      case '[object String]':
+        // already formatted for Dropzone
+        break
+      case '[object Array]':
+        options.acceptedFiles = options.acceptedFiles.join(',')
+        break
+      case '[object Object]':
+        const {extensions, message} = options.acceptedFiles
+        options.acceptedFiles = extensions.join(',')
+        options.dictInvalidFileType = this.cleanupMessage(message)
+        break
+      default:
+        // improperly formatted, revert to Dropzone default value
+        options.acceptedFiles = null
+    }
   }
 
   /**

@@ -130,20 +130,29 @@ The `maxFiles` option defines the maximum number of files to be uploaded.
 
 #### acceptedFiles
 
-The mime types of files to be accepted.
+The `acceptedFiles` option defines the mime types of files to be accepted.
 
 ```js
+// as an array of mime types
+
 {
   acceptedFiles: ['image/*', 'application/pdf']
 }
 
-// or
+// as an object with an array of mime types
+// and a custom error message
 
 {
   acceptedFiles: {
     extensions: ['image/*'],
     message: 'You are uploading an invalid file'
   }
+}
+
+// as a plain, comma-delimited string
+
+{
+  acceptedFiles: 'image/*,application/pdf'
 }
 ```
 

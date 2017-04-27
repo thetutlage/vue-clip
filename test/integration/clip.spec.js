@@ -110,7 +110,7 @@ describe('Clip', function () {
     assert.equal(component.uploader._options.dictFileTooBig, '{{filesize}} is greater than {{maxFilesize}}')
   })
 
-  it('should set acceptedFiles property on options object when defined', function () {
+  it('should set acceptedFiles property on options object when defined as array', function () {
     const component = new this.Component({
       propsData: {
         options: {
@@ -123,7 +123,7 @@ describe('Clip', function () {
     assert.equal(component.uploader._options.acceptedFiles, 'image/*,application/pdf')
   })
 
-  it('should set acceptedFiles property and dictInvalidFileType message on options object when defined', function () {
+  it('should set acceptedFiles property and dictInvalidFileType message on options object when defined as object', function () {
     const component = new this.Component({
       propsData: {
         options: {
@@ -138,6 +138,32 @@ describe('Clip', function () {
     component.$mount()
     assert.equal(component.uploader._options.acceptedFiles, 'image/*,application/pdf')
     assert.equal(component.uploader._options.dictInvalidFileType, 'That is a different file type')
+  })
+
+  it('should set acceptedFiles property on options object when defined as string', function () {
+    const component = new this.Component({
+      propsData: {
+        options: {
+          url: '/upload',
+          acceptedFiles: 'image/*,application/pdf'
+        }
+      }
+    })
+    component.$mount()
+    assert.equal(component.uploader._options.acceptedFiles, 'image/*,application/pdf')
+  })
+
+  it('should set acceptedFiles property to null on options object when defined with invalid type', function () {
+    const component = new this.Component({
+      propsData: {
+        options: {
+          url: '/upload',
+          acceptedFiles: /^image\/.*/
+        }
+      }
+    })
+    component.$mount()
+    assert.isNull(component.uploader._options.acceptedFiles)
   })
 
   it('should assign file a blobId when file has been added', function () {
